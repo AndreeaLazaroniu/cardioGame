@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -6,9 +7,13 @@ public class PlayerMovement : MonoBehaviour
 
     public float speed = 12f;
 
+    public Vector3 move;
+
     //intercaion
     public float playerReach = 3f;
     Interactable currentInteractable;
+
+    public GameObject infoPanel; // Drag your Panel here in the Inspector
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,15 +27,28 @@ public class PlayerMovement : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;
+        move = transform.right * x + transform.forward * z;
 
         controller.Move(move * speed * Time.deltaTime);
 
         CheckInteraction();
         if (Input.GetKeyDown(KeyCode.F) && currentInteractable != null)
         {
-            currentInteractable.Interact();
+            //currentInteractable.Interact();
+            SceneManager.LoadScene("HeartScene");
         }
+
+        if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
+        {
+            ToggleInfo();
+        }
+    }
+
+    public void ToggleInfo()
+    {
+        // If panel is off, turn it on. If on, turn it off.
+        bool isActive = infoPanel.activeSelf;
+        infoPanel.SetActive(!isActive);
     }
 
     void CheckInteraction()
@@ -73,10 +91,12 @@ public class PlayerMovement : MonoBehaviour
     {
         currentInteractable = newInteractable;
         currentInteractable.EnableOutline();
+        TextController.instance.EnableInteractionText(currentInteractable.message);
     }
 
     void DisableCurrentInteractable()
     {
+        TextController.instance.DisableInteractionText();
         if (currentInteractable)
         {
             currentInteractable.DisableOutline();
