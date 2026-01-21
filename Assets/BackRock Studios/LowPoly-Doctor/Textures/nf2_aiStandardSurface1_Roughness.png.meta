@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: e5f098221cf638848a5c4a9e78a69277
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308299
+  packageName: Low Poly Doctor- Game-Ready Character
+  packageVersion: 1.0
+  assetPath: Assets/BackRock Studios/LowPoly-Doctor/Textures/nf2_aiStandardSurface1_Roughness.png
+  uploadId: 736439
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -128,10 +135,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 308299
-  packageName: Low Poly Doctor- Game-Ready Character
-  packageVersion: 1.0
-  assetPath: Assets/BackRock Studios/LowPoly-Doctor/Textures/nf2_aiStandardSurface1_Roughness.png
-  uploadId: 736439

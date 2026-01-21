@@ -38,7 +38,15 @@ public class HeartPlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
         {
-            infoPanel.SetActive(true);
+            if (infoPanel.activeSelf)
+            {
+                infoPanel.SetActive(false);
+                return;
+            }
+            else
+            {
+                infoPanel.SetActive(true);
+            }
         }
     }
 

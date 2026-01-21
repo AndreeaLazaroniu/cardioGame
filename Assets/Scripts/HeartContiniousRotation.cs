@@ -2,32 +2,26 @@ using UnityEngine;
 
 public class HeartContiniousRotation : MonoBehaviour
 {
-    // Adjust these values in the Inspector to change speed and axis
     public Vector3 rotationSpeed = new Vector3(0, 50, 0);
-
     public AudioClip heartBeat;
-    public AudioSource directSource;
-
-    // Timer variables
     public float beatInterval = 1.0f; // Seconds between beats
     private float timer;
 
     void Update()
     {
+        // 1. Smooth rotation independent of frame rate
         transform.Rotate(rotationSpeed * Time.deltaTime);
-        timer += Time.deltaTime;
 
+        // 2. Safe Audio Timer (Replaces the while loop)
+        timer += Time.deltaTime;
         if (timer >= beatInterval)
         {
-            Debug.Log("Beat triggered!");
-
-            // Try playing directly from a component on the heart
-            if (directSource != null && heartBeat != null)
+            // Only play if references are assigned to avoid errors
+            if (heartBeat != null && AudioManager.instance != null)
             {
-                directSource.PlayOneShot(heartBeat);
+                AudioManager.instance.PlaySFX(heartBeat);
             }
-
-            timer = 0f;
+            timer = 0f; // Reset the timer
         }
     }
-   }
+}

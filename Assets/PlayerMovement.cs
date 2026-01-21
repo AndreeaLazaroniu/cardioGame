@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     Interactable currentInteractable;
 
     public GameObject infoPanel; // Drag your Panel here in the Inspector
+    public Camera playerCamera;
+    public float interactRange = 3f;
+    public TextMeshProUGUI uiText; // Drag your InfoPanel text here
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,21 +38,44 @@ public class PlayerMovement : MonoBehaviour
         CheckInteraction();
         if (Input.GetKeyDown(KeyCode.F) && currentInteractable != null)
         {
-            //currentInteractable.Interact();
-            SceneManager.LoadScene("HeartScene");
+            SceneManager.LoadScene("quiz");
         }
 
         if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
         {
             ToggleInfo();
         }
+
+        if (Input.GetKeyDown(KeyCode.G) && currentInteractable != null)
+        {
+            SceneManager.LoadScene("HeartScene");
+        }
     }
 
     public void ToggleInfo()
     {
-        // If panel is off, turn it on. If on, turn it off.
-        bool isActive = infoPanel.activeSelf;
-        infoPanel.SetActive(!isActive);
+        if (infoPanel.activeSelf)
+        {
+            infoPanel.SetActive(false);
+            return;
+        }
+
+        // Shoots a ray from the center of the screen
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            // Try to find the InteractableItem script on what we hit
+            InteractableItem item = hit.collider.GetComponent<InteractableItem>();
+
+            if (item != null)
+            {
+                // Set the UI text to the specific text of that object
+                uiText.text = "<b>" + item.itemName + "</b>\n" + item.infoText;
+                infoPanel.SetActive(true);
+            }
+        }
     }
 
     void CheckInteraction()
